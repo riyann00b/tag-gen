@@ -108,6 +108,7 @@ button:active {
     background: #f8f8f8;
     border-radius: 8px;
     border: 1px dashed #ccc;
+    display: none; /* Hide by default */
 }
 
 .status {
@@ -121,11 +122,13 @@ button:active {
 .status.success {
     background-color: #d4edda;
     color: #155724;
+    border-left: 4px solid #28a745;
 }
 
 .status.error {
     background-color: #f8d7da;
     color: #721c24;
+    border-left: 4px solid #dc3545;
 }
 
 .tags-container {
@@ -138,8 +141,6 @@ button:active {
 .tag {
     border: 1px solid #d4c0a9;
     background: linear-gradient(to bottom, #fff8f0 0%, #fff 100%);
-    height: var(--tag-height);
-    width: var(--tag-width);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -150,11 +151,15 @@ button:active {
     overflow: hidden;
 }
 
-/* Update these styles in your styles.css file */
+/* Tag orientation styles */
+.tag.portrait {
+    width: 6cm;
+    height: 8cm;
+}
 
 .tag-header {
     display: flex;
-    justify-content: flex-start; /* Changed from center to left-align */
+    justify-content: flex-start;
     margin-bottom: 0.1cm;
     padding-bottom: 0.1cm;
     border-bottom: 1px dashed #e0d5c5;
@@ -219,7 +224,7 @@ button:active {
     margin-top: auto;
     padding-top: 0.15cm;
     display: flex;
-    justify-content: space-between; /* Changed to space between elements */
+    justify-content: space-between;
     border-top: 1px dashed #e0d5c5;
 }
 
@@ -227,20 +232,96 @@ button:active {
     font-size: 0.35cm;
     padding: 0.08cm 0.15cm;
     margin: 0;
-    align-self: center; /* Align vertically */
-    margin-left: 0.1cm; /* Add left margin */
+    align-self: center;
+    margin-left: 0.1cm;
 }
 
 .qr-code {
     width: 2cm;
     height: 2cm;
-    margin-right: 0.1cm; /* Add right margin */
+    margin-right: 0.1cm;
 }
 
 .qr-code img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+/* Landscape specific adjustments */
+.tag.landscape {
+    width: 8cm;
+    height: 6cm;
+    padding: 0.3cm;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fix for logo and product name in landscape mode */
+.tag.landscape .tag-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.2cm;
+    margin-bottom: 0.2cm;
+    border-bottom: 1px dashed #e0d5c5;
+    width: 100%;
+}
+
+.tag.landscape .logo {
+    max-width: 3.5cm;
+    max-height: 0.8cm;
+    margin-right: 0.4cm;
+}
+
+.tag.landscape .product-name {
+    font-size: 0.4cm;
+    margin: 0;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Layout adjustment for landscape mode */
+.tag.landscape {
+    display: flex;
+    flex-direction: column;
+    padding: 0.3cm;
+}
+
+/* Pricing section in landscape mode */
+.tag.landscape .price-container {
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.2cm 0;
+}
+
+.tag.landscape .discount-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.tag.landscape .discount-price {
+    font-size: 0.8cm;
+}
+
+/* Fix QR code position in landscape */
+.tag.landscape .tag-footer {
+    margin-top: auto;
+}
+
+.tag.landscape .qr-code {
+    width: 1.8cm;
+    height: 1.8cm;
+}
+
+body:not(.print-landscape):not(.print-portrait) .tags-container {
+    grid-template-columns: repeat(auto-fill, minmax(var(--tag-width), 1fr));
+}
+
+body:not(.print-landscape):not(.print-portrait) .tag.landscape {
+    margin: 0 auto;
 }
 
 .clear-btn {
@@ -252,7 +333,35 @@ button:active {
 }
 
 .tag-batch {
-    display: contents; /* Makes children appear as direct children of parent grid */
+    display: contents;
+}
+
+/* Orientation toggle styling */
+.orientation-toggle {
+    margin-bottom: 15px;
+}
+
+.toggle-buttons {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.orientation-btn {
+    flex: 1;
+    padding: 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.orientation-btn.active {
+    background-color: var(--primary-color);
+    color: white;
 }
 
 @media print {
@@ -269,45 +378,50 @@ button:active {
         width: 100%;
     }
 
-    /* Hide UI elements only */
+    /* Hide UI elements */
     .form-container, button, h1, .button-group, .status,
     #previewContainer, #previewTag, .preview-tag-container {
         display: none !important;
-    }
-
-    /* Grid layout for A4 paper */
-    .tags-container {
-        display: grid;
-        grid-template-columns: repeat(3, 6cm);
-        grid-auto-rows: 8cm;
-        gap: 0.5cm;
-        justify-content: center;
     }
 
     .tag-batch {
         display: contents;
     }
 
-    /* Preserve tag styling */
-    .tag {
-        page-break-inside: avoid;
-        border: 1px solid #d4c0a9;
-        background: linear-gradient(to bottom, #fff8f0 0%, #fff 100%);
-        /* Keep other styles from non-print version */
+    /* Print container for both orientations */
+    .tags-container {
+        display: grid;
+        gap: 0.5cm;
+        margin: 0.5cm auto;
+        justify-content: center;
     }
 
-    /* Ensure all tag elements keep their styling */
-    .price-container, .discount-badge, .original-price,
-    .discount-price, .tag-header, .logo, .product-name,
-    .tag-footer, .product-code, .qr-code {
-        /* Print exactly as displayed on screen */
-        color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+    /* Portrait mode (6×8cm) - 3 per row */
+    .print-portrait .tags-container {
+        grid-template-columns: repeat(3, 6cm);
+        grid-auto-rows: 8cm;
+        max-width: 19cm;
     }
 
-    /* Page break handling */
-    .tags-container:nth-child(9n+9) {
-        page-break-after: always;
+    /* Landscape mode (8×6cm) - 2 per row */
+    .print-landscape .tags-container {
+        grid-template-columns: repeat(2, 8cm) !important;
+        grid-auto-rows: 6cm !important;
+        max-width: 17cm !important;
+        gap: 0.5cm !important;
     }
+
+    /* Ensure landscape tags maintain proper dimensions */
+    .print-landscape .tag {
+        width: 8cm !important;
+        height: 6cm !important;
+    }
+}
+
+    /* Ensure colors print properly */
+* {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+}
 }

@@ -34,20 +34,30 @@
       </div>
       <div class="form-group">
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" value="12" min="1" max="100">
+        <input type="number" id="quantity" placeholder="Enter quantity">
+      </div>
+      <div class="form-group orientation-toggle">
+        <label>Tag Orientation:</label>
+        <div class="toggle-buttons">
+          <button type="button" class="orientation-btn active" data-orientation="portrait">
+            <i class="fas fa-id-card-alt"></i> Portrait (6×8cm)
+          </button>
+          <button type="button" class="orientation-btn" data-orientation="landscape">
+            <i class="fas fa-id-card"></i> Landscape (8×6cm)
+          </button>
+        </div>
       </div>
       <div class="button-group">
-        <button onclick="previewTag()"><i class="fas fa-eye"></i> Preview Tag</button>
-        <button onclick="generateTags()"><i class="fas fa-tags"></i> Generate Tags</button>
-        <button onclick="printTags()"><i class="fas fa-print"></i> Print Tags</button>
+        <button onclick="previewTag()"><i class="fas fa-eye"></i> Preview</button>
+        <button onclick="generateTags()"><i class="fas fa-tags"></i> Generate</button>
+        <button onclick="printTags()"><i class="fas fa-print"></i> Print</button>
         <button onclick="clearTags()" class="clear-btn"><i class="fas fa-trash"></i> Clear All</button>
       </div>
     </div>
   </div>
 
   <div id="statusMessage" class="status"></div>
-
-  <div id="previewContainer" class="preview-tag-container" style="display:none;">
+  <div id="previewContainer" class="preview-tag-container">
     <div id="previewTag" class="tag"></div>
   </div>
 
@@ -56,78 +66,16 @@
 
 <script src="tag-functions.js"></script>
 <script>
-
-  function previewTag() {
-    if (!validateInputs()) return;
-
-    const productName = document.getElementById('productName').value;
-    const buyingPrice = parseFloat(document.getElementById('buyingPrice').value);
-    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
-    const discount = parseFloat(document.getElementById('discountPercentage').value) || 0;
-    const originalPrice = discount > 0 ? sellingPrice / (1 - discount / 100) : sellingPrice;
-
-    const previewContainer = document.getElementById('previewContainer');
-    const previewTag = document.getElementById('previewTag');
-
-    previewTag.innerHTML = createTag(productName, buyingPrice, sellingPrice, discount, originalPrice).innerHTML;
-    previewContainer.style.display = 'flex';
-
-    showStatus("Preview generated successfully!", true);
-  }
-
-  function generateTags() {
-    if (!validateInputs()) return;
-
-    const productName = document.getElementById('productName').value;
-    const buyingPrice = parseFloat(document.getElementById('buyingPrice').value);
-    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
-    const discount = parseFloat(document.getElementById('discountPercentage').value) || 0;
-    const quantity = parseInt(document.getElementById('quantity').value) || 12;
-
-    // Calculate original price based on discount if applicable
-    const originalPrice = discount > 0 ? sellingPrice / (1 - discount / 100) : sellingPrice;
-
-    const container = document.getElementById('tagsContainer');
-    // Don't clear existing tags
-
-    // Create a div to group this batch of tags
-    const tagBatch = document.createElement('div');
-    tagBatch.className = 'tag-batch';
-
-    for (let i = 0; i < quantity; i++) {
-      const tag = createTag(productName, buyingPrice, sellingPrice, discount, originalPrice);
-      tagBatch.appendChild(tag);
-    }
-
-    container.appendChild(tagBatch);
-
-    showStatus(`${quantity} tags generated successfully!`, true);
-  }
-
-  function printTags() {
-    const container = document.getElementById('tagsContainer');
-    if (container.children.length === 0) {
-      showStatus("Please generate tags before printing", false);
-      return;
-    }
-    window.print();
-  }
-
   // Add event listeners for Enter key
-  document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        previewTag();
-      }
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          previewTag();
+        }
+      });
     });
   });
-
-  function clearTags() {
-    const container = document.getElementById('tagsContainer');
-    container.innerHTML = '';
-    showStatus("All tags cleared", true);
-  }
-
 </script>
 </body>
 </html>
