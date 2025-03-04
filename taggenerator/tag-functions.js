@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
             setOrientation(orientation);
         });
     });
+
+    // Set initial orientation
+    setOrientation('portrait');
 });
 
 function setOrientation(orientation) {
@@ -31,7 +34,7 @@ function setOrientation(orientation) {
         previewTag.className = `tag ${orientation}`;
     }
 
-    // Update document class for print styles
+    // Update document class for print styles and display
     document.body.classList.toggle('print-portrait', orientation === 'portrait');
     document.body.classList.toggle('print-landscape', orientation === 'landscape');
 
@@ -39,6 +42,20 @@ function setOrientation(orientation) {
     document.querySelectorAll('.tags-container .tag').forEach(tag => {
         tag.className = `tag ${orientation}`;
     });
+
+    // Update grid layout for the generated tags container
+    const tagsContainer = document.getElementById('tagsContainer');
+    if (orientation === 'landscape') {
+        // For landscape: 2 per row to match print layout
+        tagsContainer.style.gridTemplateColumns = 'repeat(2, 8cm)';
+        tagsContainer.style.maxWidth = '17cm'; // 2 tags (8cm each) + 1cm gap
+        tagsContainer.style.margin = '0 auto';
+    } else {
+        // For portrait: auto-fill with min 6cm width
+        tagsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(6cm, 1fr))';
+        tagsContainer.style.maxWidth = '';
+        tagsContainer.style.margin = '';
+    }
 }
 
 function encodePrice(price) {
@@ -145,12 +162,22 @@ function generateTags() {
     // Get tags container
     const tagsContainer = document.getElementById('tagsContainer');
 
+    // Create tag batch container for this generation
+    const batchContainer = document.createElement('div');
+    batchContainer.className = 'tag-batch';
+
     // Generate tags
     for (let i = 0; i < quantity; i++) {
         const tag = createTag(productName, buyingPrice, sellingPrice, discountPercentage, originalPrice);
         tag.className = `tag ${currentOrientation}`;
-        tagsContainer.appendChild(tag);
+        batchContainer.appendChild(tag);
     }
+
+    // Add batch to container
+    tagsContainer.appendChild(batchContainer);
+
+    // Re-apply grid layout after adding new tags
+    setOrientation(currentOrientation);
 
     showStatus(`${quantity} tag${quantity > 1 ? 's' : ''} generated successfully`, true);
 }
@@ -196,8 +223,9 @@ function createTag(productName, buyingPrice, sellingPrice, discount, originalPri
         <div class="tag-header">
           <img src="media/Logo.svg" alt="Motitaka Logo" class="logo"
                onerror="this.src='https://via.placeholder.com/150x40?text=Motitaka';this.style.border='1px solid #ccc'">
-          <div class="product-name">${productName}</div>
+          <div class="brand-name">Moti taka</div>
         </div>
+        <div class="product-name">${productName}</div>
         <div class="price-container">
           ${discount > 0 ? `
             <div class="discount-info">
@@ -216,11 +244,12 @@ function createTag(productName, buyingPrice, sellingPrice, discount, originalPri
         </div>
         `;
     } else {
-        // Original portrait layout
+        // Portrait layout
         tag.innerHTML = `
         <div class="tag-header">
           <img src="media/Logo.svg" alt="Motitaka Logo" class="logo"
                onerror="this.src='https://via.placeholder.com/150x40?text=Motitaka';this.style.border='1px solid #ccc'">
+          <div class="brand-name">Moti taka</div>
         </div>
         <div class="product-name">${productName}</div>
         <div class="price-container">

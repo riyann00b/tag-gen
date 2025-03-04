@@ -1,3 +1,22 @@
+/* First, add the Google Fonts import at the top of your CSS file */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap');
+
+/* Then update the brand-name styling */
+.brand-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    margin: 0.1cm 0;
+    font-size: 0.45cm;
+}
+
+.tag.landscape .brand-name {
+    margin: 0 0.2cm;
+    font-size: 0.4cm;
+}
+
 :root {
     --primary-color: #6b4226;
     --primary-light: #8a562e;
@@ -159,10 +178,11 @@ button:active {
 
 .tag-header {
     display: flex;
-    justify-content: flex-start;
-    margin-bottom: 0.1cm;
+    align-items: center;
+    margin-bottom: 0.2cm;
     padding-bottom: 0.1cm;
     border-bottom: 1px dashed #e0d5c5;
+    width: 100%;
 }
 
 .logo {
@@ -177,8 +197,12 @@ button:active {
     margin: 0.15cm 0;
     line-height: 1.2;
     padding: 0 0.1cm;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    position: relative;
+    z-index: 10 !important; /* Ensure high z-index */
+    display: block !important; /* Force display */
+    visibility: visible !important; /* Ensure visibility */
+    width: 100%;
+    background-color: rgba(255,255,255,0.8); /* Add background for better contrast */
 }
 
 .price-container {
@@ -248,6 +272,19 @@ button:active {
     object-fit: contain;
 }
 
+.brand-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-left: 0.2cm;
+    font-size: 0.45cm;
+}
+
+.tag.landscape .brand-name {
+    font-size: 0.4cm;
+}
+
 /* Landscape specific adjustments */
 .tag.landscape {
     width: 8cm;
@@ -259,12 +296,8 @@ button:active {
 
 /* Fix for logo and product name in landscape mode */
 .tag.landscape .tag-header {
-    display: flex;
-    align-items: center;
-    padding-bottom: 0.2cm;
-    margin-bottom: 0.2cm;
-    border-bottom: 1px dashed #e0d5c5;
-    width: 100%;
+    flex-shrink: 0; /* Prevent header from shrinking */
+    margin-bottom: 0.1cm;
 }
 
 .tag.landscape .logo {
@@ -274,26 +307,36 @@ button:active {
 }
 
 .tag.landscape .product-name {
-    font-size: 0.4cm;
-    margin: 0;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.40cm;
+    text-align: center;
+    margin: 0.1cm 0 0.2cm 0;
+    position: relative; /* Ensure proper stacking context */
+    z-index: 2; /* Prevent other elements from overlapping */
+    background-color: rgba(255,255,255,0.7); /* Add slight background to improve readability */
+    padding: 0.05cm 0;
+    border-radius: 3px;
+    white-space: normal; /* Allow wrapping */
+    max-height: 1cm; /* Cap the height */
 }
 
 /* Layout adjustment for landscape mode */
 .tag.landscape {
+    width: 8cm;
+    height: 6cm;
+    padding: 0.3cm;
     display: flex;
     flex-direction: column;
-    padding: 0.3cm;
+    justify-content: space-between; /* Better distribute vertical space */
 }
 
 /* Pricing section in landscape mode */
 .tag.landscape .price-container {
     flex-direction: row;
     justify-content: space-between;
-    margin: 0.2cm 0;
+    margin: 0.15cm 0;
+    padding: 0.1cm 0.15cm;
+    position: relative;
+    z-index: 1;
 }
 
 .tag.landscape .discount-info {
@@ -308,12 +351,33 @@ button:active {
 
 /* Fix QR code position in landscape */
 .tag.landscape .tag-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-top: auto;
+    padding-top: 0.15cm;
+    width: 100%;
 }
 
 .tag.landscape .qr-code {
     width: 1.8cm;
     height: 1.8cm;
+    margin-right: 0.2cm;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -0.2cm;
+
+}
+
+.tag.landscape .qr-code img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 body:not(.print-landscape):not(.print-portrait) .tags-container {
@@ -423,5 +487,4 @@ body:not(.print-landscape):not(.print-portrait) .tag.landscape {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
-}
 }
