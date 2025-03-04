@@ -442,43 +442,38 @@ body:not(.print-landscape):not(.print-portrait) .tag.landscape {
         width: 100%;
     }
 
-    /* Hide UI elements */
+    /* Hide UI elements during print */
     .form-container, button, h1, .button-group, .status,
     #previewContainer, #previewTag, .preview-tag-container {
         display: none !important;
     }
 
-    .tag-batch {
-        display: contents;
-    }
-
-    /* Print container for both orientations */
-    .tags-container {
-        display: grid;
-        gap: 0.5cm;
-        margin: 0.5cm auto;
-        justify-content: center;
-    }
-
-    /* Portrait mode (6×8cm) - 3 per row */
-    .print-portrait .tags-container {
-        grid-template-columns: repeat(3, 6cm);
-        grid-auto-rows: 8cm;
-        max-width: 19cm;
-    }
-
-    /* Landscape mode (8×6cm) - 2 per row */
+    /* Print landscape tags in a 2×4 grid with cutting space */
     .print-landscape .tags-container {
+        display: grid !important;
         grid-template-columns: repeat(2, 8cm) !important;
-        grid-auto-rows: 6cm !important;
-        max-width: 17cm !important;
-        gap: 0.5cm !important;
+        grid-template-rows: repeat(4, 6cm) !important;
+        grid-gap: 0.7cm 0.8cm !important; /* Vertical gap, Horizontal gap */
+        max-width: 17.5cm !important;
+        margin: 0 auto !important;
+        padding-top: 0.35cm !important; /* Additional space at top */
+    }
+
+    /* Add extra space in middle for cutting lines */
+    .print-landscape .tags-container > div:nth-child(2n) {
+        margin-right: 0.4cm !important; /* Extra space before column cut */
+    }
+
+    .print-landscape .tags-container > div:nth-child(n+5) {
+        margin-top: 0.4cm !important; /* Extra space before middle row cut */
     }
 
     /* Ensure landscape tags maintain proper dimensions */
     .print-landscape .tag {
         width: 8cm !important;
         height: 6cm !important;
+        margin: 0 !important; /* Remove any additional margins */
+        page-break-inside: avoid !important;
     }
 }
 
