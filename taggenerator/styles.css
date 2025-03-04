@@ -1,0 +1,313 @@
+:root {
+    --primary-color: #6b4226;
+    --primary-light: #8a562e;
+    --accent-color: #e63946;
+    --background-color: #fff8f0;
+    --tag-height: 8cm;
+    --tag-width: 6cm;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Georgia', serif;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 28px;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 15px;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(107, 66, 38, 0.2);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.preview-tag-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+}
+
+.status {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+}
+
+.status.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.tags-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--tag-width), 1fr));
+    gap: 10px;
+    justify-content: center;
+}
+
+.tag {
+    border: 1px solid #d4c0a9;
+    background: linear-gradient(to bottom, #fff8f0 0%, #fff 100%);
+    height: var(--tag-height);
+    width: var(--tag-width);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0.25cm;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Update these styles in your styles.css file */
+
+.tag-header {
+    display: flex;
+    justify-content: flex-start; /* Changed from center to left-align */
+    margin-bottom: 0.1cm;
+    padding-bottom: 0.1cm;
+    border-bottom: 1px dashed #e0d5c5;
+}
+
+.logo {
+    max-width: 3cm;
+    max-height: 0.7cm;
+}
+
+.product-name {
+    font-weight: 600;
+    font-size: 0.55cm;
+    text-align: center;
+    margin: 0.15cm 0;
+    line-height: 1.2;
+    padding: 0 0.1cm;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price-container {
+    margin: 0.15cm 0;
+    padding: 0.15cm;
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid #f0e6d9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.original-price {
+    font-size: 0.4cm;
+    color: #666;
+    text-decoration: line-through;
+    margin-bottom: 0.1cm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.discount-badge {
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 0.35cm;
+    padding: 0.06cm 0.15cm;
+    border-radius: 0.15cm;
+    display: inline-block;
+    margin-right: 0.2cm;
+}
+
+.discount-price {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 0.9cm;
+    line-height: 1.1;
+}
+
+.tag-footer {
+    margin-top: auto;
+    padding-top: 0.15cm;
+    display: flex;
+    justify-content: space-between; /* Changed to space between elements */
+    border-top: 1px dashed #e0d5c5;
+}
+
+.product-code {
+    font-size: 0.35cm;
+    padding: 0.08cm 0.15cm;
+    margin: 0;
+    align-self: center; /* Align vertically */
+    margin-left: 0.1cm; /* Add left margin */
+}
+
+.qr-code {
+    width: 2cm;
+    height: 2cm;
+    margin-right: 0.1cm; /* Add right margin */
+}
+
+.qr-code img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.clear-btn {
+    background-color: #dc3545;
+}
+
+.clear-btn:hover {
+    background-color: #c82333;
+}
+
+.tag-batch {
+    display: contents; /* Makes children appear as direct children of parent grid */
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 0.5cm;
+    }
+
+    body, .container {
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        box-shadow: none;
+        width: 100%;
+    }
+
+    /* Hide UI elements only */
+    .form-container, button, h1, .button-group, .status,
+    #previewContainer, #previewTag, .preview-tag-container {
+        display: none !important;
+    }
+
+    /* Grid layout for A4 paper */
+    .tags-container {
+        display: grid;
+        grid-template-columns: repeat(3, 6cm);
+        grid-auto-rows: 8cm;
+        gap: 0.5cm;
+        justify-content: center;
+    }
+
+    .tag-batch {
+        display: contents;
+    }
+
+    /* Preserve tag styling */
+    .tag {
+        page-break-inside: avoid;
+        border: 1px solid #d4c0a9;
+        background: linear-gradient(to bottom, #fff8f0 0%, #fff 100%);
+        /* Keep other styles from non-print version */
+    }
+
+    /* Ensure all tag elements keep their styling */
+    .price-container, .discount-badge, .original-price,
+    .discount-price, .tag-header, .logo, .product-name,
+    .tag-footer, .product-code, .qr-code {
+        /* Print exactly as displayed on screen */
+        color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Page break handling */
+    .tags-container:nth-child(9n+9) {
+        page-break-after: always;
+    }
+}

@@ -1,10 +1,10 @@
 // tag-functions.js
 
 // Map digits 0-9 to letters A-J for product code encoding
-const digitMap = "ABCDEFGHIJ";
+const digitMap = "ZABCDEFGHIJ";
 
 function encodePrice(price) {
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const alphabet = "ZABCDEFGHIJKLMNOPQRSTUVWXY";
     let code = alphabet[Math.floor(Math.random() * 26)]; // Starting letter
     String(price).split('').forEach(digit => {
         code += digitMap[parseInt(digit)] || digit;
@@ -54,10 +54,10 @@ function showStatus(message, isSuccess) {
 }
 
 function createTag(productName, buyingPrice, sellingPrice, discount, originalPrice) {
-  const tag = document.createElement('div');
-  tag.className = 'tag';
+    const tag = document.createElement('div');
+    tag.className = 'tag';
 
-  tag.innerHTML = `
+    tag.innerHTML = `
     <div class="tag-header">
       <img src="media/Logo.svg" alt="Motitaka Logo" class="logo" 
            onerror="this.src='https://via.placeholder.com/150x40?text=Motitaka';this.style.border='1px solid red'">
@@ -70,8 +70,8 @@ function createTag(productName, buyingPrice, sellingPrice, discount, originalPri
       ` : ''}
       <div class="discount-price">₹${formatCurrency(Math.round(sellingPrice))}</div>
     </div>
-    <div class="product-code">${encodePrice(buyingPrice)}</div>
     <div class="tag-footer">
+      <div class="product-code">${encodePrice(buyingPrice)}</div>
       <div class="qr-code">
         <img src="media/qr-code.svg" alt="QR Code"
              onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://linktr.ee/motitaka'">
@@ -79,5 +79,5 @@ function createTag(productName, buyingPrice, sellingPrice, discount, originalPri
     </div>
   `;
 
-  return tag;
+    return tag;
 }

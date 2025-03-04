@@ -5,279 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Motitaka Price Tag Generator</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      color: #333;
-      line-height: 1.5;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      font-family: 'Georgia', serif;
-      color: var(--primary-color);
-      margin-bottom: 25px;
-      font-size: 28px;
-      border-bottom: 2px solid var(--primary-light);
-      padding-bottom: 15px;
-    }
-
-    .form-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 25px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #444;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 15px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      box-sizing: border-box;
-      transition: border-color 0.3s;
-    }
-
-    input:focus {
-      border-color: var(--primary-color);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(107, 66, 38, 0.2);
-    }
-
-    .button-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    button {
-      background-color: var(--primary-color);
-      color: #fff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 500;
-    }
-
-    button:hover {
-      background-color: var(--primary-light);
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .preview-tag-container {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-      padding: 15px;
-      background: #f8f8f8;
-      border-radius: 8px;
-      border: 1px dashed #ccc;
-    }
-
-    .status {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-      display: none;
-    }
-
-    .status.success {
-      background-color: #d4edda;
-      color: #155724;
-    }
-
-    .status.error {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-
-    .tags-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--tag-width), 1fr));
-      gap: 10px;
-      justify-content: center;
-    }
-
-    /* Update print styles */
-    @media print {
-      body, .container {
-        margin: 0;
-        padding: 0;
-        background-color: white;
-        box-shadow: none;
-      }
-
-      .form-container, button, h1, .preview-tag-container, .button-group, .status {
-        display: none;
-      }
-
-      .tags-container {
-        gap: 0;
-      }
-    }
-
-    :root {
-      --primary-color: #6b4226;
-      --primary-light: #8a562e;
-      --accent-color: #e63946;
-      --background-color: #fff8f0;
-      --tag-height: 5cm;
-      --tag-width: 4cm;
-    }
-
-    .tag {
-      border: 1px solid #d4c0a9;
-      background: linear-gradient(to bottom, #fff8f0 0%, #fff 100%);
-      height: var(--tag-height);
-      width: var(--tag-width);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      box-sizing: border-box;
-      padding: 0.2cm;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .tag-header {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 0.25cm;
-      padding-bottom: 0.1cm;
-      border-bottom: 1px dashed #e0d5c5;
-    }
-
-    .logo {
-      max-width: 2.5cm;
-      max-height: 0.6cm;
-    }
-
-    .product-name {
-      font-weight: 600;
-      font-size: 0.5cm;
-      text-align: center;
-      margin: 0.2cm 0;
-      line-height: 1.2;
-      padding: 0 0.1cm;
-    }
-
-    .price-container {
-      margin: 0.3cm 0;
-      padding: 0.15cm;
-      background-color: rgba(255,255,255,0.7);
-      border-radius: 4px;
-      text-align: center;
-      border: 1px solid #f0e6d9;
-    }
-
-    .original-price {
-      font-size: 0.32cm;
-      color: #666;
-      text-decoration: line-through;
-      margin-bottom: 0.05cm;
-    }
-
-    .discount-badge {
-      background-color: var(--accent-color);
-      color: white;
-      font-size: 0.28cm;
-      padding: 0.04cm 0.12cm;
-      border-radius: 0.12cm;
-      display: inline-block;
-      margin-right: 0.15cm;
-    }
-
-    .discount-price {
-      font-weight: bold;
-      color: var(--accent-color);
-      font-size: 0.7cm;
-      line-height: 1;
-    }
-
-    .product-code {
-      font-size: 0.3cm;
-      color: #555;
-      padding: 0.06cm 0.12cm;
-      border-radius: 0.12cm;
-      background: #f9f5f0;
-      margin: 0.3cm auto 0.4cm;
-      border: 1px dashed #e0d5c5;
-      width: fit-content;
-      letter-spacing: 0.02cm;
-    }
-
-    .tag-footer {
-      margin-top: auto;
-      padding-top: 0.2cm;
-      display: flex;
-      justify-content: center;
-      border-top: 1px dashed #e0d5c5;
-    }
-
-    .qr-code {
-      width: 2.2cm;
-      height: 2.2cm;
-      background-color: white;
-      border: 1px solid #ddd;
-      padding: 0.08cm;
-      border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .qr-code img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    /* Remove shop-details class entirely */
-
-    @media print {
-      .tag {
-        page-break-inside: avoid;
-        margin: 0;
-        box-shadow: none;
-      }
-    }
-
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 <div class="container">
   <h1>Motitaka Price Tag Generator</h1>
@@ -310,6 +40,7 @@
         <button onclick="previewTag()"><i class="fas fa-eye"></i> Preview Tag</button>
         <button onclick="generateTags()"><i class="fas fa-tags"></i> Generate Tags</button>
         <button onclick="printTags()"><i class="fas fa-print"></i> Print Tags</button>
+        <button onclick="clearTags()" class="clear-btn"><i class="fas fa-trash"></i> Clear All</button>
       </div>
     </div>
   </div>
@@ -325,6 +56,7 @@
 
 <script src="tag-functions.js"></script>
 <script>
+
   function previewTag() {
     if (!validateInputs()) return;
 
@@ -356,12 +88,18 @@
     const originalPrice = discount > 0 ? sellingPrice / (1 - discount / 100) : sellingPrice;
 
     const container = document.getElementById('tagsContainer');
-    container.innerHTML = '';
+    // Don't clear existing tags
+
+    // Create a div to group this batch of tags
+    const tagBatch = document.createElement('div');
+    tagBatch.className = 'tag-batch';
 
     for (let i = 0; i < quantity; i++) {
       const tag = createTag(productName, buyingPrice, sellingPrice, discount, originalPrice);
-      container.appendChild(tag);
+      tagBatch.appendChild(tag);
     }
+
+    container.appendChild(tagBatch);
 
     showStatus(`${quantity} tags generated successfully!`, true);
   }
@@ -383,6 +121,13 @@
       }
     });
   });
+
+  function clearTags() {
+    const container = document.getElementById('tagsContainer');
+    container.innerHTML = '';
+    showStatus("All tags cleared", true);
+  }
+
 </script>
 </body>
 </html>
